@@ -1,5 +1,7 @@
 <template>
-  $END$
+  <div class="loader">
+    123
+  </div>
 </template>
 
 <script>
@@ -8,6 +10,9 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .loader {
+    min-height: 66.666vh;
+    background-color: #333;
+  }
 </style>
