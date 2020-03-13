@@ -1,14 +1,19 @@
 <template>
   <footer class="footer">
     <div class="footer__text">
-      STAR WARS CHARACTER Encyclopedia, 2019
+      STAR WARS CHARACTER Encyclopedia, {{ currentYear }}
     </div>
   </footer>
 </template>
 
 <script>
   export default {
-    name: "HomeFooter"
+    name: "HomeFooter",
+    computed: {
+      currentYear: () => {
+        return new Date().getFullYear();
+      }
+    }
   }
 </script>
 

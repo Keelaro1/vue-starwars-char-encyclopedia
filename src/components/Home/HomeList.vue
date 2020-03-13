@@ -10,10 +10,10 @@
       </div>
       <div class="list__content">
         <HomeListItem
-          v-for="item in peopleData"
+          v-for="(item, i) in peopleData"
           :avatar="item.name.charAt(0)"
           :name="item.name"
-          :species = "item.name"
+          :species = "species[i]"
           :key="item.name"
           />
       </div>
@@ -32,7 +32,8 @@
     name: "HomeList",
     data: () => ({
       peopleData: [],
-      species: {},
+      speciesData: [],
+      species: [],
       pagePeople: 1,
       canFetchPeople: true,
       loading: true
@@ -50,18 +51,38 @@
           this.$store.dispatch('fetchPeople', urlPeople);
           setTimeout(() => {
             this.fetchPeople();
+            this.setSpecies(this.pagePeople);
             this.canFetchPeople = true;
           }, 2000);
+        }
+      },
+      setSpecies: function (page) {
+        let start = 10 * page - 10;
+        for(let i = start; i < page * 10; i++) {
+          if(!this.peopleData[i]) {
+            break;
+          } else if (this.peopleData[i].species.length === 0) {
+            this.species.push('Unknown Species');
+          } else {
+            for(let j = 0; j < this.speciesData.length; j++) {
+              if(this.speciesData[j].url === this.peopleData[i].species[0]) {
+                this.species.push(this.speciesData[j].name);
+              }
+            }
+          }
         }
       }
     },
     components: {AppLoader, HomeModal, HomeListItem},
-    mounted() {
+    async mounted() {
       let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
-      this.$store.dispatch('fetchPeople', urlPeople);
+      await this.$store.dispatch('fetchPeople', urlPeople);
+      await this.$store.dispatch('fetchAllSpecies');
       setTimeout(() => {
         this.loading = false;
         this.fetchPeople();
+        this.speciesData = this.$store.getters.getSpecies;
+        this.setSpecies(this.pagePeople);
       }, 2000);
     },
   }
