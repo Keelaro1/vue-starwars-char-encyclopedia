@@ -1,6 +1,6 @@
 <template>
   <div class="loader">
-    123
+
   </div>
 </template>
 

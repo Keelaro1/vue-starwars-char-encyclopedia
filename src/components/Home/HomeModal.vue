@@ -1,5 +1,7 @@
 <template>
-  <div class="modal">
+  <div
+    class="modal"
+  >
     <div class="modal__content">
       <div class="modal__name">
         <div class="modal__name_avatar">N</div>
@@ -82,7 +84,9 @@
 
 <script>
   export default {
-    name: "HomeModal"
+    name: "HomeModal",
+    mounted() {
+    }
   }
 </script>
 
@@ -93,10 +97,7 @@
     width: 800px;
     height: 492px;
     position: relative;
-    display: block;
-    /*left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);*/
+    display: none;
     &__content {
       padding: 80px;
     }

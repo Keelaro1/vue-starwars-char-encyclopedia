@@ -1,6 +1,7 @@
 <template>
-  <main class="list">
-    <div class="container">
+  <main class="list" v-infinite-scroll="fetchMorePeople">
+    <AppLoader v-if="loading"/>
+    <div class="container" v-else>
       <div class="list__search">
         <input type="text" class="list__input" placeholder="Search by name">
         <svg class="list__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,24 +10,67 @@
       </div>
       <div class="list__content">
         <HomeListItem
-          v-for="item in 8"
-          :key="item"/>
+          v-for="item in peopleData"
+          :avatar="item.name.charAt(0)"
+          :name="item.name"
+          :species = "item.name"
+          :key="item.name"
+          />
       </div>
     </div>
-    <HomeModal />
+    <HomeModal
+    />
   </main>
 </template>
 
 <script>
   import HomeListItem from "./HomeListItem";
   import HomeModal from "./HomeModal";
+  import AppLoader from "../AppLoader";
+
   export default {
     name: "HomeList",
-    components: {HomeModal, HomeListItem}
+    data: () => ({
+      peopleData: [],
+      species: {},
+      pagePeople: 1,
+      canFetchPeople: true,
+      loading: true
+    }),
+    methods: {
+      fetchPeople: function() {
+        this.peopleData = this.peopleData.concat(this.$store.getters.getPeople.results);
+      },
+      fetchMorePeople: function() {
+        let next = this.$store.getters.getPeople.next;
+        if(this.canFetchPeople && next) {
+          this.canFetchPeople = false;
+          this.pagePeople++;
+          let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
+          this.$store.dispatch('fetchPeople', urlPeople);
+          setTimeout(() => {
+            this.fetchPeople();
+            this.canFetchPeople = true;
+          }, 2000);
+        }
+      }
+    },
+    components: {AppLoader, HomeModal, HomeListItem},
+    mounted() {
+      let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
+      this.$store.dispatch('fetchPeople', urlPeople);
+      setTimeout(() => {
+        this.loading = false;
+        this.fetchPeople();
+      }, 2000);
+    },
   }
 </script>
 
 <style scoped lang="scss">
+  .openedModal {
+    display: none;
+  }
   .list {
     min-height: 66.6666vh;
     padding-bottom: 140px;

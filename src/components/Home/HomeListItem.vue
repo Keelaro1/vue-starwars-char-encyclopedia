@@ -1,16 +1,29 @@
 <template>
   <div class="item">
     <div class="item__content">
-      <div class="item__avatar">N</div>
-      <div class="item__name">Name</div>
-      <div class="item__species">Species</div>
+      <div
+        class="item__avatar"
+        :style="{backgroundColor: randomColor}"
+      >
+        {{ avatar }}
+      </div>
+      <div class="item__name">{{ name }}</div>
+      <div class="item__species">{{ species }}</div>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: "HomeListItem"
+    name: "HomeListItem",
+    data: () => ({
+    }),
+    props: ['avatar', 'name', 'species'],
+    computed: {
+      randomColor: function () {
+        return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+      }
+    },
   }
 </script>
 
@@ -25,6 +38,7 @@
     margin-right: 20px;
     margin-bottom: 32px;
     position: relative;
+    animation: fadein 0.5s ease-in;
     &__content {
       position: absolute;
       top: 50%; left: 50%;
@@ -65,6 +79,16 @@
       user-select: none;
       box-shadow: 0px 10px 40px rgba(37, 136, 167, 0.38);
       transition: 0.2s;
+    }
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      margin-top: 10px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0px;
     }
   }
 </style>
