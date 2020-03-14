@@ -1,103 +1,215 @@
 <template>
-  <div
-    class="modal"
-  >
-    <div class="modal__content">
-      <div class="modal__name">
-        <div class="modal__name_avatar">N</div>
-        <div class="modal__name_text">
-          Name
+  <div class="modal__main">
+    <div class="modal__wrapper">
+    </div>
+    <div
+      class="modal"
+      :class="{displayModal: isModalClicked}"
+    >
+      <div class="modal__content">
+        <div class="modal__name">
+          <div
+            class="modal__name_avatar"
+            :style="{backgroundColor: getColor}"
+          >
+            {{ getName.charAt(0) }}
+          </div>
+          <div class="modal__name_text">
+            {{ getName }}
+          </div>
         </div>
-      </div>
-      <div class="modal__info">
-        <table>
-          <tr class="modal__info_row">
-            <td>
+        <div class="modal__info">
+          <table>
+            <tr class="modal__info_row">
+              <td>
               <span class="modal__info_byear modal__info_item">
                 Birth year
               </span>
-            </td>
-            <td>
+              </td>
+              <td>
               <span class="modal__info_description">
-                Birth year
+                {{ getBirthYear }}
               </span>
-            </td>
-          </tr >
-          <tr class="modal__info_row">
-            <td>
+              </td>
+            </tr >
+            <tr class="modal__info_row">
+              <td>
               <span class="modal__info_species modal__info_item">
                 Species
               </span>
-            </td>
-            <td>
+              </td>
+              <td>
               <span class="modal__info_description">
-                Species
+                {{ getSpecies }}
               </span>
-            </td>
-          </tr>
-          <tr class="modal__info_row">
-            <td>
+              </td>
+            </tr>
+            <tr class="modal__info_row">
+              <td>
               <span class="modal__info_gender modal__info_item">
                 Gender
               </span>
-            </td>
-            <td>
+              </td>
+              <td>
               <span class="modal__info_description">
-                Gender
+                {{ getGender }}
               </span>
-            </td>
-          </tr>
-        </table>
-        <table>
-          <tr class="modal__info_row">
-            <td>
+              </td>
+            </tr>
+          </table>
+          <table>
+            <tr class="modal__info_row">
+              <td>
               <span class="modal__info_homeworld modal__info_item">
                 Homeworld
               </span>
-            </td>
-            <td>
+              </td>
+              <td>
               <span class="modal__info_description">
-                Homeworld
+                {{ getHomeWorld }}
               </span>
-            </td>
-          </tr>
-          <tr class="modal__info_row">
-            <td>
+              </td>
+            </tr>
+            <tr class="modal__info_row">
+              <td class="modal__info_filmsCell">
               <span class="modal__info_films modal__info_item">
                 Films
               </span>
-            </td>
-            <td>
+              </td>
+              <td>
               <span class="modal__info_description">
-                Films
+                <h5
+                  class="modal__info_film"
+                  v-for="item of getFilms"
+                  :key="item.title"
+                >
+                  {{ item.title }}
+                </h5>
               </span>
-            </td>
-          </tr>
-        </table>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
+      <span @click="hideModal()">
+        <svg
+          class="modal__close-btn"
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M1 13L13 1M13 13L1 1" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
     </div>
-    <svg class="modal__close-btn" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 13L13 1M13 13L1 1" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    </svg>
   </div>
 </template>
 
 <script>
   export default {
     name: "HomeModal",
-    mounted() {
-    }
+    data: function () {
+      return {
+        dataFromItemLocal: {
+          title: 'name',
+          birth_year: 'birth_year',
+          species: 'species',
+          gender: 'gender',
+          homeworld: 'homeworld',
+          films: 'films'
+        },
+      }
+    },
+    props: {
+      isModalClicked: {
+        type: Boolean
+      },
+      dataFromItem: {
+        type: Array
+      }
+    },
+    computed: {
+      getName: function() {
+        let name = this.dataFromItem[this.dataFromItem.length - 1];
+        if(name) {
+          return name.name
+        }
+        return 'name'
+      },
+      getBirthYear: function() {
+        let birthYear = this.dataFromItem[this.dataFromItem.length - 1];
+        if(birthYear) {
+          return birthYear.birth_year
+        }
+        return 'birth_year'
+      },
+      getSpecies: function() {
+        let species = this.dataFromItem[this.dataFromItem.length - 2];
+        if(species) {
+          return species.species
+        }
+        return 'species'
+      },
+      getGender: function() {
+        let gender = this.dataFromItem[this.dataFromItem.length - 1];
+        if(gender) {
+          return gender.gender
+        }
+        return 'gender'
+      },
+      getHomeWorld: function() {
+        let homeWorld = this.dataFromItem[this.dataFromItem.length - 3];
+        if(homeWorld) {
+          return homeWorld.data.name
+        }
+        return homeWorld;
+      },
+      getFilms: function() {
+        let films = [];
+        for(let film of this.dataFromItem) {
+          if(film.data) {
+            films.push(film.data)
+          }
+        }
+        return films;
+      },
+      getColor: function () {
+        let color = this.$store.getters.getColor;
+        if(color) {
+          return color;
+        }
+        return '#FFFFFF'
+      }
+    },
+    methods: {
+      hideModal: function () {
+        this.$emit('hideModal');
+      }
+    },
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+  .modal__main {
+    position: relative;
+    overflow: hidden;
+  }
+  table {
+    min-width: 45%;
+  }
   .modal {
     background-color: #1A1A1A;
-    border-radius: 8px;
-    width: 800px;
-    height: 492px;
-    position: relative;
     display: none;
+    border-radius: 8px;
+    width: 840px;
+    height: 500px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadein 0.2s ease-in;
     &__content {
       padding: 80px;
     }
@@ -135,6 +247,12 @@
       display: flex;
       flex-wrap: wrap;
       margin-top: 70px;
+      &_filmsCell {
+        vertical-align: top;
+      }
+      &_film {
+        margin: 0;
+      }
       &_row {
         td {
           padding-bottom: 15px;
@@ -180,6 +298,19 @@
       top: 22px;
       right: 22px;
       cursor: pointer;
+    }
+  }
+  .displayModal {
+    display: block;
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      margin-top: 10px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0px;
     }
   }
 </style>

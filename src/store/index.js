@@ -7,15 +7,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     people: {},
-    species: []
+    species: [],
+    dataModal: {},
+    color: '',
   },
   getters: {
     getPeople: state => state.people,
-    getSpecies: state => state.species
+    getSpecies: state => state.species,
+    getDataModal: state => state.dataModal,
+    getColor: state => state.color
   },
   mutations: {
     setPeople: (state, data) => state.people = Object.assign(data),
-    setSpecies: (state, data) => state.species = data
+    setSpecies: (state, data) => state.species = data,
+    setDataModal: (state, data) => state.dataModal = data,
+    setColor: (state, data) => state.color = data
   },
   actions: {
     async fetchPeople({commit}, url) {
@@ -47,6 +53,30 @@ export default new Vuex.Store({
             result = result.concat(item.data.results);
           }
           commit('setSpecies', result);
+          return result;
+        })
+        .catch(e => console.log(e));
+    },
+    async fetchDataModal({commit}, data) {
+      let urls = [];
+      let promises = [];
+
+      let species = axios.get(data.species)
+        .then(response => species = response.data.name || 'Unknown Species');
+
+      urls = urls.concat(data.films);
+      urls.push(data.homeworld);
+      for(let i = 0; i < urls.length; i++) {
+        promises.push(axios.get((urls[i])))
+      }
+      return Promise.all(promises)
+        .then(response => {
+          let result = [];
+          for(let item of response) {
+            result = result.concat(item);
+          }
+          result.push({species: species});
+          commit('setDataModal', result);
           return result;
         })
         .catch(e => console.log(e));

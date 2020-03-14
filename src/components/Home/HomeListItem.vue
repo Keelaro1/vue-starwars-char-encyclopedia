@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" @click="activateModal()">
     <div class="item__content">
       <div
         class="item__avatar"
@@ -18,12 +18,29 @@
     name: "HomeListItem",
     data: () => ({
     }),
-    props: ['avatar', 'name', 'species'],
+    props: {
+      avatar: {
+        type: String
+      },
+      name: {
+        type: String
+      },
+      species: {
+        type: String
+      }
+    },
     computed: {
       randomColor: function () {
         return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
       }
     },
+    methods: {
+      activateModal: function () {
+        let color = this.randomColor;
+        this.$store.commit('setColor', color);
+        this.$emit('activateModal', color)
+      }
+    }
   }
 </script>
 
