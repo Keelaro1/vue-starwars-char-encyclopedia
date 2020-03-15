@@ -48,7 +48,7 @@
     }
     &__lights {
       transform: translate(11px, -8px);
-      animation: fadeOut 800ms infinite linear;
+      animation: fadeOut 1000ms infinite linear;
     }
     &__light {
       height: 2px;
@@ -82,7 +82,7 @@
     }
     to {
       opacity: 1;
-      margin-top: 0px;
+      margin-top: 0;
     }
   }
   @keyframes fadeOut {

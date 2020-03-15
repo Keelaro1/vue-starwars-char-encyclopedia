@@ -3,12 +3,17 @@
     <div
       class="list"
       :class="{blockScroll: !canScroll}"
-      v-infinite-scroll="fetchMorePeople"
     >
       <div class="list__wrapper" v-if="!loading">
         <div class="container">
           <div class="list__search">
-            <input type="text" class="list__input" placeholder="Search by name">
+            <input
+              type="text"
+              class="list__input"
+              placeholder="Search by name"
+              v-model="request"
+              @input="fetchSearch()"
+            >
             <svg class="list__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16.6667 14.6667H15.6133L15.24 14.3067C16.5467 12.7867 17.3333 10.8133 17.3333 8.66667C17.3333 3.88 13.4533 0 8.66667 0C3.88 0 0 3.88 0 8.66667C0 13.4533 3.88 17.3333 8.66667 17.3333C10.8133 17.3333 12.7867 16.5467 14.3067 15.24L14.6667 15.6133V16.6667L21.3333 23.32L23.32 21.3333L16.6667 14.6667ZM8.66667 14.6667C5.34667 14.6667 2.66667 11.9867 2.66667 8.66667C2.66667 5.34667 5.34667 2.66667 8.66667 2.66667C11.9867 2.66667 14.6667 5.34667 14.6667 8.66667C14.6667 11.9867 11.9867 14.6667 8.66667 14.6667Z" fill="#808080"/>
             </svg>
@@ -23,6 +28,7 @@
               @activateModal="activateModal(item)"
             />
           </div>
+          <infinite-loading v-if="canFetchPeople" @infinite="fetchMorePeople()"></infinite-loading>
         </div>
       </div>
       <AppLoader
@@ -30,6 +36,7 @@
         :loaded = "loaded"
       />
     </div>
+
   </main>
 
 </template>
@@ -37,6 +44,8 @@
 <script>
   import HomeListItem from "./HomeListItem";
   import AppLoader from "../AppLoader";
+  import InfiniteLoading from "vue-infinite-loading"
+  import _ from 'lodash'
 
   export default {
     name: "HomeList",
@@ -51,23 +60,53 @@
       isBlurred: false,
       loaded: false,
       canScroll: false,
+      scrolling: true,
+      afterSearch: false,
+      request: ''
     }),
     methods: {
-      fetchPeople: function() {
+      getPeople: function() {
         this.peopleData = this.peopleData.concat(this.$store.getters.getPeople.results);
       },
+      fetchSearch: _.debounce(function () {
+        this.loading = true;
+        this.loaded = false;
+        this.peopleData = [];
+        this.pagePeople = 1;
+        let urlPeople = `https://swapi.co/api/people/?search=${this.request}&page=1`;
+        this.$store.dispatch('fetchPeople', urlPeople);
+        setTimeout(() => {
+          this.getPeople();
+          this.afterSearch = true;
+          this.loading = false;
+        }, 2000)
+      }, 3000),
       fetchMorePeople: function() {
         let next = this.$store.getters.getPeople.next;
         if(this.canFetchPeople && next) {
           this.canFetchPeople = false;
-          this.pagePeople++;
-          let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
-          this.$store.dispatch('fetchPeople', urlPeople);
-          setTimeout(() => {
-            this.fetchPeople();
-            this.setSpecies(this.pagePeople);
-            this.canFetchPeople = true;
-          }, 2000);
+          if(this.afterSearch === true) {
+            this.$store.dispatch('fetchPeople', next);
+              setTimeout(() => {
+                this.$store.dispatch('fetchPeople', next);
+                setTimeout(() => {
+                  this.getPeople();
+                  this.setSpecies(this.pagePeople);
+                  this.canFetchPeople = true;
+                }, 2500)
+              }, 1000);
+          } else {
+            this.pagePeople++;
+            let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
+            setTimeout(() => {
+              this.$store.dispatch('fetchPeople', urlPeople);
+              setTimeout(() => {
+                this.getPeople();
+                this.setSpecies(this.pagePeople);
+                this.canFetchPeople = true;
+              }, 2500)
+            }, 1000);
+          }
         }
       },
       setSpecies: function (page) {
@@ -90,14 +129,14 @@
         this.$emit('activateModal', item)
       }
     },
-    components: {AppLoader, HomeListItem},
-    async mounted() {
+    components: {AppLoader, HomeListItem, InfiniteLoading},
+    mounted() {
       let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
-      await this.$store.dispatch('fetchPeople', urlPeople);
-      await this.$store.dispatch('fetchAllSpecies');
+      this.$store.dispatch('fetchPeople', urlPeople);
+      this.$store.dispatch('fetchAllSpecies');
       setTimeout(() => {
         this.loaded = true;
-        this.fetchPeople();
+        this.getPeople();
         this.speciesData = this.$store.getters.getSpecies;
         this.setSpecies(this.pagePeople);
         setTimeout(() => {
@@ -161,6 +200,9 @@
   .blockScroll {
     position: fixed;
     width: 100%;
+  }
+  .infinite-loading-container {
+    opacity: 0;
   }
 
 </style>
