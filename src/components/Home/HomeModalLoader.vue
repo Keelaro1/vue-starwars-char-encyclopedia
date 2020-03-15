@@ -2,6 +2,11 @@
   <div class="loader">
     <div class="loader__wrapper" >
       <div class="loader__img"></div>
+      <div class="loader__lights">
+        <div class="loader__light loader__firstLight"></div>
+        <div class="loader__light loader__secondLight"></div>
+        <div class="loader__light loader__thirdLight"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,10 +41,31 @@
       margin: 150px auto 0;
     }
     &__img {
-      content: url("../../assets/img/loader__falcon.svg");
+      content: url("../../assets/img/loader__img.svg");
       transform: rotate(25deg);
       width: 60px;
       height: 65px;
+    }
+    &__lights {
+      transform: translate(11px, -8px);
+      animation: fadeOut 800ms infinite linear;
+    }
+    &__light {
+      height: 2px;
+      background-color: #6EF6FF;
+      transform: rotate(25deg);
+      margin-bottom: 2px;
+    }
+    &__firstLight {
+      width: 13px;
+    }
+    &__secondLight {
+      width: 11px;
+      opacity: 0.4;
+    }
+    &__thirdLight {
+      width: 8px;
+      opacity: 0.1;
     }
   }
   .displayModal {
@@ -57,6 +83,11 @@
     to {
       opacity: 1;
       margin-top: 0px;
+    }
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
     }
   }
   @keyframes spin {

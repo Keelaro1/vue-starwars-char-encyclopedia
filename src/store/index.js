@@ -60,12 +60,10 @@ export default new Vuex.Store({
     async fetchDataModal({commit}, data) {
       let urls = [];
       let promises = [];
-
-      let species = axios.get(data.species)
-        .then(response => species = response.data.name || 'Unknown Species');
-
       urls = urls.concat(data.films);
       urls.push(data.homeworld);
+      urls.push(data.species);
+
       for(let i = 0; i < urls.length; i++) {
         promises.push(axios.get((urls[i])))
       }
@@ -75,7 +73,6 @@ export default new Vuex.Store({
           for(let item of response) {
             result = result.concat(item);
           }
-          result.push({species: species});
           commit('setDataModal', result);
           return result;
         })

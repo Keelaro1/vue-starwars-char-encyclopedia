@@ -2,14 +2,10 @@
   <main class="main">
     <div
       class="list"
+      :class="{blockScroll: !canScroll}"
       v-infinite-scroll="fetchMorePeople"
-      infinite-scroll-throttle-delay="4000"
     >
-      <AppLoader
-        v-if="loading"
-        :loaded = "loaded"
-      />
-      <div class="list__wrapper" v-else>
+      <div class="list__wrapper" v-if="!loading">
         <div class="container">
           <div class="list__search">
             <input type="text" class="list__input" placeholder="Search by name">
@@ -29,6 +25,10 @@
           </div>
         </div>
       </div>
+      <AppLoader
+        v-else
+        :loaded = "loaded"
+      />
     </div>
   </main>
 
@@ -49,7 +49,8 @@
       loading: true,
       isModalClicked: false,
       isBlurred: false,
-      loaded: false
+      loaded: false,
+      canScroll: false,
     }),
     methods: {
       fetchPeople: function() {
@@ -101,6 +102,7 @@
         this.setSpecies(this.pagePeople);
         setTimeout(() => {
           this.loading = false;
+          this.canScroll = true;
         }, 500)
       }, 2000);
     },
@@ -155,6 +157,10 @@
     -o-filter: blur(5px);
     -ms-filter: blur(5px);
     filter: blur(5px);
+  }
+  .blockScroll {
+    position: fixed;
+    width: 100%;
   }
 
 </style>

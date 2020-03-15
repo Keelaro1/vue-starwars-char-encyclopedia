@@ -158,7 +158,7 @@
       getSpecies: function() {
         let species = this.dataFromItem[this.dataFromItem.length - 2];
         if(species) {
-          return species.species
+          return species.data.name
         }
         return 'species'
       },
@@ -213,7 +213,7 @@
     background-color: #1A1A1A;
     display: none;
     border-radius: 8px;
-    width: 840px;
+    width: 870px;
     height: 500px;
     position: fixed;
     left: 50%;
@@ -256,11 +256,12 @@
       color: #808080;
       display: flex;
       flex-wrap: wrap;
-      margin-top: 70px;
+      margin-top: 60px;
       &_filmsCell {
         vertical-align: top;
       }
       &_film {
+        font-size: 18px;
         margin: 0;
       }
       &_row {

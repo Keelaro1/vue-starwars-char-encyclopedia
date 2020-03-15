@@ -1,10 +1,13 @@
 <template>
   <div class="loader"
     :class="{loaded: loaded}">
-    <div
-      class="loader__wrapper"
-    >
+    <div class="loader__wrapper">
       <div class="loader__img"></div>
+      <div class="loader__lights">
+        <div class="loader__light loader__firstLight"></div>
+        <div class="loader__light loader__secondLight"></div>
+        <div class="loader__light loader__thirdLight"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,10 +37,31 @@
       margin: 0 auto;
     }
     &__img {
-      content: url("../assets/img/loader__falcon.svg");
+      content: url("../assets/img/loader__img.svg");
       transform: rotate(25deg);
       width: 60px;
       height: 65px;
+    }
+    &__lights {
+      transform: translate(11px, -8px);
+      animation: fadeOut 800ms infinite linear;
+    }
+    &__light {
+      height: 2px;
+      background-color: #6EF6FF;
+      transform: rotate(25deg);
+      margin-bottom: 2px;
+    }
+    &__firstLight {
+      width: 13px;
+    }
+    &__secondLight {
+      width: 11px;
+      opacity: 0.4;
+    }
+    &__thirdLight {
+      width: 8px;
+      opacity: 0.1;
     }
   }
   .loaded {
@@ -50,6 +74,11 @@
     }
     to {
       transform:rotate(360deg);
+    }
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
     }
   }
 </style>

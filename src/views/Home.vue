@@ -50,7 +50,7 @@ export default {
         setTimeout(() => {
           this.loadingModal = false;
         }, 1000)
-      }, 2500)
+      }, 2000)
     },
     hideModal: function () {
       this.isModalClicked = false;
