@@ -5,6 +5,7 @@
     <div
       class="modal"
       :class="{displayModal: isModalClicked}"
+      v-if="!loadingModal"
     >
       <div class="modal__content">
         <div class="modal__name">
@@ -103,13 +104,19 @@
           <path d="M1 13L13 1M13 13L1 1" stroke="white" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </span>
-    </div>
+    </div >
+    <HomeModalLoader
+      :class="{displayModal: isModalClicked}"
+      v-else
+    />
   </div>
 </template>
 
 <script>
+  import HomeModalLoader from "./HomeModalLoader";
   export default {
     name: "HomeModal",
+    components: {HomeModalLoader},
     data: function () {
       return {
         dataFromItemLocal: {
@@ -128,6 +135,9 @@
       },
       dataFromItem: {
         type: Array
+      },
+      loadingModal: {
+        type: Boolean
       }
     },
     computed: {

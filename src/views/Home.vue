@@ -12,6 +12,7 @@
     <HomeModal
       :isModalClicked="isModalClicked"
       :dataFromItem="dataFromItem"
+      :loadingModal="loadingModal"
       @hideModal="hideModal()"
     />
   </div>
@@ -35,7 +36,8 @@ export default {
   data: () => ({
     isBlurred: false,
     isModalClicked: false,
-    dataFromItem: []
+    dataFromItem: [],
+    loadingModal: true
   }),
   methods: {
     activateModal: function (item) {
@@ -45,11 +47,15 @@ export default {
       setTimeout(() => {
         this.dataFromItem = this.$store.getters.getDataModal;
         this.dataFromItem.push(item);
-      }, 2000)
+        setTimeout(() => {
+          this.loadingModal = false;
+        }, 1000)
+      }, 2500)
     },
     hideModal: function () {
       this.isModalClicked = false;
       this.isBlurred = false;
+      this.loadingModal = true;
     },
   },
 }

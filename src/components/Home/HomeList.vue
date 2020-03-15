@@ -3,26 +3,30 @@
     <div
       class="list"
       v-infinite-scroll="fetchMorePeople"
+      infinite-scroll-throttle-delay="4000"
     >
-      <AppLoader v-if="loading"/>
-      <div class="container"
-        v-else
-      >
-        <div class="list__search">
-          <input type="text" class="list__input" placeholder="Search by name">
-          <svg class="list__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.6667 14.6667H15.6133L15.24 14.3067C16.5467 12.7867 17.3333 10.8133 17.3333 8.66667C17.3333 3.88 13.4533 0 8.66667 0C3.88 0 0 3.88 0 8.66667C0 13.4533 3.88 17.3333 8.66667 17.3333C10.8133 17.3333 12.7867 16.5467 14.3067 15.24L14.6667 15.6133V16.6667L21.3333 23.32L23.32 21.3333L16.6667 14.6667ZM8.66667 14.6667C5.34667 14.6667 2.66667 11.9867 2.66667 8.66667C2.66667 5.34667 5.34667 2.66667 8.66667 2.66667C11.9867 2.66667 14.6667 5.34667 14.6667 8.66667C14.6667 11.9867 11.9867 14.6667 8.66667 14.6667Z" fill="#808080"/>
-          </svg>
-        </div>
-        <div class="list__content">
-          <HomeListItem
-            v-for="(item, i) in peopleData"
-            :avatar="item.name.charAt(0)"
-            :name="item.name"
-            :species = "species[i]"
-            :key="item.name"
-            @activateModal="activateModal(item)"
-          />
+      <AppLoader
+        v-if="loading"
+        :loaded = "loaded"
+      />
+      <div class="list__wrapper" v-else>
+        <div class="container">
+          <div class="list__search">
+            <input type="text" class="list__input" placeholder="Search by name">
+            <svg class="list__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.6667 14.6667H15.6133L15.24 14.3067C16.5467 12.7867 17.3333 10.8133 17.3333 8.66667C17.3333 3.88 13.4533 0 8.66667 0C3.88 0 0 3.88 0 8.66667C0 13.4533 3.88 17.3333 8.66667 17.3333C10.8133 17.3333 12.7867 16.5467 14.3067 15.24L14.6667 15.6133V16.6667L21.3333 23.32L23.32 21.3333L16.6667 14.6667ZM8.66667 14.6667C5.34667 14.6667 2.66667 11.9867 2.66667 8.66667C2.66667 5.34667 5.34667 2.66667 8.66667 2.66667C11.9867 2.66667 14.6667 5.34667 14.6667 8.66667C14.6667 11.9867 11.9867 14.6667 8.66667 14.6667Z" fill="#808080"/>
+            </svg>
+          </div>
+          <div class="list__content">
+            <HomeListItem
+              v-for="(item, i) in peopleData"
+              :avatar="item.name.charAt(0)"
+              :name="item.name"
+              :species = "species[i]"
+              :key="item.name"
+              @activateModal="activateModal(item)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +49,7 @@
       loading: true,
       isModalClicked: false,
       isBlurred: false,
+      loaded: false
     }),
     methods: {
       fetchPeople: function() {
@@ -90,10 +95,13 @@
       await this.$store.dispatch('fetchPeople', urlPeople);
       await this.$store.dispatch('fetchAllSpecies');
       setTimeout(() => {
-        this.loading = false;
+        this.loaded = true;
         this.fetchPeople();
         this.speciesData = this.$store.getters.getSpecies;
         this.setSpecies(this.pagePeople);
+        setTimeout(() => {
+          this.loading = false;
+        }, 500)
       }, 2000);
     },
   }
@@ -105,9 +113,11 @@
   }
   .list {
     min-height: 66.6666vh;
-    padding-bottom: 140px;
     background-color: #333;
     position: relative;
+    &__wrapper {
+      padding-bottom: 140px;
+    }
     &__search {
       display: flex;
       justify-content: center;
