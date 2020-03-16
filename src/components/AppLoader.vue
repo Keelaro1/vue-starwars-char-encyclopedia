@@ -25,7 +25,6 @@
 
 <style scoped lang="scss">
   .loader {
-    height: 66.666vh;
     background-color: #333;
     padding-top: 220px;
     opacity: 1;

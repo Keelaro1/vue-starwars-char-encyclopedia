@@ -35,7 +35,7 @@ export default new Vuex.Store({
       }
     },
     async fetchAllSpecies({commit}) {
-      return axios("https://swapi.co/api/species/")
+      return await axios("https://swapi.co/api/species/")
         .then(response => {
           return response.data.count;
         })

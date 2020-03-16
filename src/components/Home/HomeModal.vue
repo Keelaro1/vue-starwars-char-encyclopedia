@@ -77,7 +77,7 @@
                 Films
               </span>
               </td>
-              <td>
+              <td class="modal__info_filmsCell">
               <span class="modal__info_description">
                 <h5
                   class="modal__info_film"
@@ -202,10 +202,6 @@
 </script>
 
 <style lang="scss">
-  .modal__main {
-    position: relative;
-    overflow: hidden;
-  }
   table {
     min-width: 45%;
   }
@@ -220,6 +216,10 @@
     top: 50%;
     transform: translate(-50%, -50%);
     animation: fadein 0.2s ease-in;
+    &__main {
+      position: relative;
+      overflow: hidden;
+    }
     &__content {
       padding: 80px;
     }

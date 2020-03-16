@@ -97,6 +97,9 @@
       box-shadow: 0px 10px 40px rgba(37, 136, 167, 0.38);
       transition: 0.2s;
     }
+    &:active {
+      box-shadow: 0px 10px 40px rgba(37, 136, 167, 0.38);
+    }
   }
   @keyframes fadein {
     from {

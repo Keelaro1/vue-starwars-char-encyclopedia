@@ -14,5 +14,6 @@
 <style lang="scss">
   @import "~normalize.css";
   @import "assets/main.css";
+  @import "assets/media.css";
 </style>
 

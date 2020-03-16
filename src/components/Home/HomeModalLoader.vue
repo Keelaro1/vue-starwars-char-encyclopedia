@@ -1,11 +1,11 @@
 <template>
-  <div class="loader">
-    <div class="loader__wrapper" >
-      <div class="loader__img"></div>
-      <div class="loader__lights">
-        <div class="loader__light loader__firstLight"></div>
-        <div class="loader__light loader__secondLight"></div>
-        <div class="loader__light loader__thirdLight"></div>
+  <div class="modal__loader">
+    <div class="modal__loader-wrapper" >
+      <div class="modal__loader-img"></div>
+      <div class="modal__loader-lights">
+        <div class="modal__loader-light modal__loader-firstLight"></div>
+        <div class="modal__loader__light modal__loader-secondLight"></div>
+        <div class="modal__loader-light modal__loader-thirdLight"></div>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 </script>
 
 <style scoped lang="scss">
-  .loader {
+  .modal__loader {
     width: 840px;
     height: 500px;
     position: fixed;
@@ -34,36 +34,36 @@
     transform: translate(-50%, -50%);
     display: none;
     animation: fadein 0.2s ease-in;
-    &__wrapper {
+    &-wrapper {
       height: 200px;
       width: 200px;
       animation: spin 3000ms infinite linear;
       margin: 150px auto 0;
     }
-    &__img {
+    &-img {
       content: url("../../assets/img/loader__img.svg");
       transform: rotate(25deg);
       width: 60px;
       height: 65px;
     }
-    &__lights {
+    &-lights {
       transform: translate(11px, -8px);
       animation: fadeOut 1000ms infinite linear;
     }
-    &__light {
+    &-light {
       height: 2px;
       background-color: #6EF6FF;
       transform: rotate(25deg);
       margin-bottom: 2px;
     }
-    &__firstLight {
+    &-firstLight {
       width: 13px;
     }
-    &__secondLight {
+    &-secondLight {
       width: 11px;
       opacity: 0.4;
     }
-    &__thirdLight {
+    &-thirdLight {
       width: 8px;
       opacity: 0.1;
     }

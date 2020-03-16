@@ -25,6 +25,7 @@
       text-transform: uppercase;
       font-size: 18px;
       line-height: 121px;
+      font-weight: bold;
       text-align: center;
       letter-spacing: 0.11em;
       font-feature-settings: 'cpsp' on;

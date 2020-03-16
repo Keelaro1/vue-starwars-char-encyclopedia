@@ -136,14 +136,14 @@
       this.$store.dispatch('fetchAllSpecies');
       setTimeout(() => {
         this.loaded = true;
-        this.getPeople();
-        this.speciesData = this.$store.getters.getSpecies;
-        this.setSpecies(this.pagePeople);
+        this.canScroll = true;
         setTimeout(() => {
+          this.getPeople();
+          this.speciesData = this.$store.getters.getSpecies;
+          this.setSpecies(this.pagePeople);
           this.loading = false;
-          this.canScroll = true;
         }, 500)
-      }, 2000);
+      }, 2500);
     },
   }
 </script>
@@ -204,5 +204,4 @@
   .infinite-loading-container {
     opacity: 0;
   }
-
 </style>
