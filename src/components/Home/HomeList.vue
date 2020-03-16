@@ -95,12 +95,14 @@
       },
       fetchMorePeople: function() {
         let next = this.$store.getters.getPeople.next;
+        this.pagePeople++;
         if(this.canFetchPeople && next) {
           this.canFetchPeople = false;
           if(this.afterSearch === true) {
-              this.updatePeople(next);
+            this.updatePeople(next);
           } else {
             this.updatePeople(next);
+            this.setSpecies(this.pagePeople);
           }
         }
       },
