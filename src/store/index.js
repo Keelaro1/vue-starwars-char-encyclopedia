@@ -78,31 +78,6 @@ export default new Vuex.Store({
         })
         .catch(e => console.log(e));
     },
-    /*async fetchPeopleSearch({commit}, data) {
-      return axios(data)
-        .then(response => {
-          console.log(response);
-          return response.data.count;
-        })
-        .then(count => {
-          const pages = Math.ceil((count - 1) / 10);
-          let promises = [];
-          for (let i = 1; i <= pages; i++) {
-            promises.push(axios(`${data}&page=${i}`));
-          }
-          return Promise.all(promises);
-        })
-        .then(response => {
-          let result = [];
-          for(let item of response) {
-            result = result.concat(item.data.results);
-          }
-          console.log(result);
-          commit('setPeople', result);
-          return result;
-        })
-        .catch(e => console.log(e));
-    }*/
   },
   modules: {
   }

@@ -29,13 +29,14 @@
     padding-top: 100px !important;
   }
   .modal__main .modal {
-    width: 320px;
     height: 750px;
-    margin-left: -13px;
     border-radius: 0;
+    width: 100%;
+    margin-left: -20px;
+    padding: 20px 40px 20px 40px;
   }
   .modal .modal__content {
-    padding: 20px;
+    padding: 0;
   }
   .modal .modal__name {
     margin-top: 40px;
@@ -58,8 +59,7 @@
     padding-bottom: 100px;
   }
   .modal__loader {
-    width: 320px !important;
-    margin-left: -13px !important;
+    width: 100% !important;
     border-radius: 0 !important;
   }
 }

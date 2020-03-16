@@ -65,8 +65,10 @@
       request: ''
     }),
     methods: {
+
       getPeople: function() {
-        this.peopleData = this.peopleData.concat(this.$store.getters.getPeople.results);
+        let newPeople = this.$store.getters.getPeople.results;
+        return this.peopleData = this.peopleData.concat(newPeople);
       },
       fetchSearch: _.debounce(function () {
         this.loading = true;
@@ -81,31 +83,24 @@
           this.loading = false;
         }, 2000)
       }, 3000),
+      updatePeople(url) {
+        setTimeout(() => {
+          this.$store.dispatch('fetchPeople', url);
+          setTimeout(() => {
+            this.getPeople();
+            this.setSpecies(this.pagePeople);
+            this.canFetchPeople = true;
+          }, 2500)
+        }, 1000);
+      },
       fetchMorePeople: function() {
         let next = this.$store.getters.getPeople.next;
         if(this.canFetchPeople && next) {
           this.canFetchPeople = false;
           if(this.afterSearch === true) {
-            this.$store.dispatch('fetchPeople', next);
-              setTimeout(() => {
-                this.$store.dispatch('fetchPeople', next);
-                setTimeout(() => {
-                  this.getPeople();
-                  this.setSpecies(this.pagePeople);
-                  this.canFetchPeople = true;
-                }, 2500)
-              }, 1000);
+              this.updatePeople(next);
           } else {
-            this.pagePeople++;
-            let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
-            setTimeout(() => {
-              this.$store.dispatch('fetchPeople', urlPeople);
-              setTimeout(() => {
-                this.getPeople();
-                this.setSpecies(this.pagePeople);
-                this.canFetchPeople = true;
-              }, 2500)
-            }, 1000);
+            this.updatePeople(next);
           }
         }
       },
