@@ -90,7 +90,7 @@
             this.getPeople();
             this.setSpecies(this.pagePeople);
             this.canFetchPeople = true;
-          }, 2500)
+          }, 3500)
         }, 1000);
       },
       fetchMorePeople: function() {
@@ -138,7 +138,7 @@
           this.setSpecies(this.pagePeople);
           this.loading = false;
         }, 500)
-      }, 2500);
+      }, 3500);
     },
   }
 </script>

@@ -209,7 +209,7 @@
     background-color: #1A1A1A;
     display: none;
     border-radius: 8px;
-    width: 870px;
+    width: 810px;
     height: 500px;
     position: fixed;
     left: 50%;
@@ -221,7 +221,7 @@
       overflow: hidden;
     }
     &__content {
-      padding: 80px;
+      padding: 60px;
     }
     &__name {
       display: flex;
@@ -307,7 +307,7 @@
     &__close-btn {
       position: absolute;
       top: 22px;
-      right: 22px;
+      right: 30px;
       cursor: pointer;
     }
   }
