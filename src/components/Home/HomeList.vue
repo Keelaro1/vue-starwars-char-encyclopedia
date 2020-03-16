@@ -71,16 +71,18 @@
         return this.peopleData = this.peopleData.concat(newPeople);
       },
       fetchSearch: _.debounce(function () {
+        this.pagePeople = 1;
         this.loading = true;
         this.loaded = false;
         this.peopleData = [];
-        this.pagePeople = 1;
+        this.species = [];
         let urlPeople = `https://swapi.co/api/people/?search=${this.request}&page=1`;
         this.$store.dispatch('fetchPeople', urlPeople);
         setTimeout(() => {
           this.getPeople();
           this.afterSearch = true;
           this.loading = false;
+          this.setSpecies(this.pagePeople);
         }, 2000)
       }, 3000),
       updatePeople(url) {
