@@ -1,4 +1,4 @@
-# vue-asanov-test
+# Star Wars Character Encyclopedia
 
 ## Project setup
 ```
