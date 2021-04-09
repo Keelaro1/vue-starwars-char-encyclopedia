@@ -35,7 +35,7 @@ export default new Vuex.Store({
       }
     },
     async fetchAllSpecies({commit}) {
-      return await axios("https://swapi.co/api/species/")
+      return await axios("https://swapi.dev/api/species/")
         .then(response => {
           return response.data.count;
         })
@@ -43,7 +43,7 @@ export default new Vuex.Store({
           const pages = Math.ceil((count - 1) / 10);
           let promises = [];
           for (let i = 1; i <= pages; i++) {
-            promises.push(axios(`https://swapi.co/api/species?page=${i}`));
+            promises.push(axios(`https://swapi.dev/api/species?page=${i}`));
           }
           return Promise.all(promises);
         })

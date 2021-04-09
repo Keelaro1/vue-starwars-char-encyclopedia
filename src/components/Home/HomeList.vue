@@ -76,7 +76,7 @@
         this.loaded = false;
         this.peopleData = [];
         this.species = [];
-        let urlPeople = `https://swapi.co/api/people/?search=${this.request}&page=1`;
+        let urlPeople = `https://swapi.dev/api/people/?search=${this.request}&page=1`;
         this.$store.dispatch('fetchPeople', urlPeople);
         setTimeout(() => {
           this.getPeople();
@@ -130,7 +130,7 @@
     },
     components: {AppLoader, HomeListItem, InfiniteLoading},
     mounted() {
-      let urlPeople = `https://swapi.co/api/people/?page=${this.pagePeople}`;
+      let urlPeople = `https://swapi.dev/api/people/?page=${this.pagePeople}`;
       this.$store.dispatch('fetchPeople', urlPeople);
       this.$store.dispatch('fetchAllSpecies');
       setTimeout(() => {
